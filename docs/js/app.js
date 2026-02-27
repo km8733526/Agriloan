@@ -4,7 +4,7 @@
 // Backend must be running at http://127.0.0.1:5000
 // ============================================================
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000";
+const API_BASE = "https://your-backend-url.onrender.com";
 document.addEventListener('DOMContentLoaded', function () {
     initializeFormValidation();
     initializeAadhaarFormatting();
@@ -230,4 +230,5 @@ _style.textContent = `
   0%   { transform: translateX(0);    opacity: 1; }
   100% { transform: translateX(100%); opacity: 0; }
 }`;
+
 document.head.appendChild(_style);
