@@ -1,0 +1,224 @@
+/* Custom Styles for Agricultural Loan Credit Scorer */
+
+/* Root variables for consistent theming */
+:root {
+    --primary-green: #16a34a;
+    --primary-blue: #2563eb;
+    --secondary-green: #22c55e;
+    --secondary-blue: #3b82f6;
+    --danger: #dc2626;
+    --warning: #f59e0b;
+    --success: #10b981;
+}
+
+/* Loading animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+    transition: all 0.3s ease;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-green);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-blue);
+}
+
+/* Form input focus styles */
+input:focus, select:focus, textarea:focus {
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+}
+
+/* Aadhaar number formatting */
+#aadhaar {
+    letter-spacing: 2px;
+}
+
+/* Map container styles */
+#map, #resultMap {
+    z-index: 1;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* File upload area */
+#landDocument:hover + div {
+    border-color: var(--primary-green);
+}
+
+/* Trust score animation */
+#trustScore {
+    animation: fadeInScale 0.5s ease-out;
+}
+
+@keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Risk badge animations */
+#riskBadge {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* Dashboard table hover effects */
+.hover\:bg-gray-50:hover {
+    background-color: #f9fafb;
+    cursor: pointer;
+}
+
+/* Print styles */
+@media print {
+    nav, .no-print {
+        display: none;
+    }
+    
+    body {
+        font-size: 12pt;
+    }
+    
+    .bg-gradient-to-r {
+        background: #16a34a !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
+
+/* Responsive design improvements */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    table {
+        font-size: 0.875rem;
+    }
+    
+    .grid {
+        gap: 1rem;
+    }
+}
+
+/* Card hover effects */
+.shadow-md:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Button hover effects */
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Notification styles */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Status badge colors */
+.status-approved {
+    background-color: #dcfce7;
+    color: #16a34a;
+}
+
+.status-review {
+    background-color: #fef3c7;
+    color: #d97706;
+}
+
+.status-rejected {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
+/* Gradient text */
+.gradient-text {
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-blue) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Loading overlay */
+#loadingModal {
+    display: none;
+}
+
+#loadingModal.show {
+    display: flex;
+}
+
+/* Custom checkbox and radio styles */
+input[type="checkbox"], input[type="radio"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--primary-green);
+    border-color: #d1d5db;
+}
+
+input[type="checkbox"]:checked, input[type="radio"]:checked {
+    background-color: var(--primary-green);
+    border-color: var(--primary-green);
+}
+
+/* Leaflet popup customization */
+.leaflet-popup-content-wrapper {
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.leaflet-popup-content {
+    margin: 1rem;
+    font-size: 0.875rem;
+}
