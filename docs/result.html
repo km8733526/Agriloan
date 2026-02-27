@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Evaluation Result - AgriLoan Credit Scorer</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-gray-50">
+
+<!-- Navigation -->
+<nav class="bg-gradient-to-r from-green-700 to-blue-700 text-white shadow-lg">
+    <div class="container mx-auto px-4 py-4">
+        <div class="flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                </svg>
+                <h1 class="text-2xl font-bold">AgriLoan Credit Scorer</h1>
+            </div>
+            <div class="flex space-x-4">
+                <a href="index.html"     class="hover:text-green-200 transition">Application</a>
+                <a href="dashboard.html" class="hover:text-green-200 transition">Dashboard</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-6xl mx-auto">
+
+        <h2 class="text-3xl font-bold text-gray-800 mb-8">Credit Evaluation Result</h2>
+
+        <!-- Farmer Summary -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h3 class="text-xl font-semibold text-green-700 mb-4">Farmer Summary</h3>
+            <div class="grid md:grid-cols-3 gap-4">
+                <div><p class="text-gray-600">Name</p>           <p class="font-semibold text-lg" id="resultName">—</p></div>
+                <div><p class="text-gray-600">District</p>       <p class="font-semibold text-lg capitalize" id="resultDistrict">—</p></div>
+                <div><p class="text-gray-600">Application ID</p> <p class="font-semibold text-lg" id="resultAppId">—</p></div>
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6 mb-6">
+
+            <!-- Land Details -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-xl font-semibold text-green-700 mb-4">Land Details</h3>
+                <div class="space-y-3">
+                    <div class="flex justify-between"><span class="text-gray-600">Survey Number:</span> <span class="font-medium" id="resultSurvey">—</span></div>
+                    <div class="flex justify-between"><span class="text-gray-600">Land Size:</span>     <span class="font-medium" id="resultLandSize">—</span></div>
+                    <div class="flex justify-between"><span class="text-gray-600">Irrigation:</span>    <span class="font-medium" id="resultIrrigation">—</span></div>
+                    <div class="flex justify-between"><span class="text-gray-600">Ownership:</span>     <span class="font-medium" id="resultOwnership">—</span></div>
+                    <div class="flex justify-between"><span class="text-gray-600">Primary Crop:</span>  <span class="font-medium" id="resultCrop">—</span></div>
+                </div>
+            </div>
+
+            <!-- Map -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-xl font-semibold text-green-700 mb-4">Land Location</h3>
+                <div id="resultMap" class="h-64 rounded-lg"></div>
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6 mb-6">
+
+            <!-- Soil Analysis (from backend) -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-xl font-semibold text-green-700 mb-4">Soil Analysis</h3>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Soil Type:</span>
+                        <span id="soilType" class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">—</span>
+                    </div>
+                    <div class="flex justify-between"><span class="text-gray-600">pH Level:</span>    <span class="font-medium" id="soilPh">—</span></div>
+                    <div class="flex justify-between"><span class="text-gray-600">Nitrogen:</span>    <span class="font-medium" id="soilN">—</span></div>
+                    <div class="flex justify-between"><span class="text-gray-600">Phosphorus:</span>  <span class="font-medium" id="soilP">—</span></div>
+                    <div class="flex justify-between"><span class="text-gray-600">Potassium:</span>   <span class="font-medium" id="soilK">—</span></div>
+                </div>
+            </div>
+
+            <!-- Weather Conditions (from backend) -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-xl font-semibold text-green-700 mb-4">Weather Conditions</h3>
+                <div class="space-y-3">
+                    <div class="flex justify-between"><span class="text-gray-600">Annual Rainfall:</span>     <span class="font-medium" id="weatherRainfall">—</span></div>
+                    <div class="flex justify-between"><span class="text-gray-600">Temperature Range:</span>   <span class="font-medium" id="weatherTemp">—</span></div>
+                    <div class="flex justify-between"><span class="text-gray-600">Humidity:</span>            <span class="font-medium" id="weatherHumidity">—</span></div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Drought Risk:</span>
+                        <span id="weatherDrought" class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">—</span>
+                    </div>
+                    <div class="flex justify-between"><span class="text-gray-600">Monsoon:</span>             <span class="font-medium" id="weatherMonsoon">—</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Credit Score Section -->
+        <div class="bg-gradient-to-r from-green-600 to-blue-600 rounded-lg shadow-lg p-8 mb-6 text-white">
+            <div class="grid md:grid-cols-3 gap-6 items-center">
+                <div class="text-center">
+                    <p class="text-lg opacity-90 mb-2">Trust Score</p>
+                    <p class="text-6xl font-bold" id="trustScore">—</p>
+                    <p class="text-sm opacity-90 mt-2">out of 100</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-lg opacity-90 mb-2">Risk Level</p>
+                    <div id="riskBadge" class="inline-block px-6 py-3 rounded-full font-bold text-xl bg-gray-300 text-gray-700">
+                        —
+                    </div>
+                </div>
+                <div class="text-center">
+                    <p class="text-lg opacity-90 mb-2">Recommendation</p>
+                    <div class="bg-white bg-opacity-20 rounded-lg p-4">
+                        <p class="text-2xl font-bold" id="recommendation">—</p>
+                        <p class="text-sm opacity-90" id="recommendationSub">Processing…</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loan Terms -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h3 class="text-xl font-semibold text-green-700 mb-4">Detailed Analysis</h3>
+            <div class="grid md:grid-cols-2 gap-6">
+
+                <!-- Strengths list -->
+                <div>
+                    <h4 class="font-semibold text-gray-700 mb-3">Key Factors</h4>
+                    <ul class="space-y-2" id="strengthsList">
+                        <li class="flex items-start text-gray-400 italic">Loading…</li>
+                    </ul>
+                </div>
+
+                <!-- Loan terms -->
+                <div>
+                    <h4 class="font-semibold text-gray-700 mb-3">Loan Terms</h4>
+                    <div class="bg-gray-50 rounded-lg p-4 space-y-2" id="loanTermsBox">
+                        <p class="text-gray-400 italic">Loading…</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex justify-center space-x-4 flex-wrap gap-y-3">
+            <button onclick="window.print()"
+                    class="bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-700 transition flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+                </svg>
+                Print Report
+            </button>
+            <a href="index.html"
+               class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition flex items-center">
+                New Application
+            </a>
+            
+        </div>
+
+    </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const API_BASE = 'http://127.0.0.1:5000';
+
+document.addEventListener('DOMContentLoaded', async function () {
+
+    // ── 1. Try to get data from localStorage (set by app.js after /evaluate) ──
+    let result  = JSON.parse(localStorage.getItem('evaluationResult') || 'null');
+    let appData = JSON.parse(localStorage.getItem('applicationData')  || 'null');
+
+    // ── 2. If opened via dashboard "View Details", fetch from backend ─────────
+    const urlId = new URLSearchParams(window.location.search).get('id');
+    if (urlId && !result) {
+        try {
+            const res = await fetch(`${API_BASE}/applications/${urlId}`);
+            if (res.ok) {
+                const row = await res.json();
+                // Map DB row shape to result shape
+                result  = row;
+                appData = row;
+            }
+        } catch (e) {
+            console.warn('Could not fetch application detail:', e);
+        }
+    }
+
+    if (!result && !appData) {
+        document.querySelector('.max-w-6xl').innerHTML =
+            `<div class="bg-red-50 border border-red-200 rounded-lg p-8 text-center">
+               <p class="text-red-600 text-lg font-semibold">No evaluation data found.</p>
+               <a href="index.html" class="mt-4 inline-block text-blue-600 underline">
+                 Submit a new application
+               </a>
+             </div>`;
+        return;
+    }
+
+    // ── 3. Populate farmer summary ────────────────────────────────────────────
+    setText('resultName',     result.farmer_name  || appData?.fullName     || '—');
+    setText('resultDistrict', result.district      || appData?.district    || '—');
+    setText('resultAppId',    result.application_id || result.db_id
+                                ? '#AL' + String(result.db_id || '').padStart(7,'0')
+                                : '—');
+
+    // ── 4. Land details ───────────────────────────────────────────────────────
+    setText('resultSurvey',     result.survey_number || appData?.surveyNumber || '—');
+    setText('resultLandSize',   (result.land_size    || appData?.landSize || '—') + ' acres');
+    setText('resultIrrigation', result.irrigation    || appData?.irrigation || '—');
+    setText('resultOwnership',  result.ownership     || appData?.ownership  || '—');
+    setText('resultCrop',       result.primary_crop  || appData?.primaryCrop || '—');
+
+    // ── 5. Map ────────────────────────────────────────────────────────────────
+    const lat = parseFloat(result.latitude  || appData?.latitude  || 19.9975);
+    const lng = parseFloat(result.longitude || appData?.longitude || 73.7898);
+    const map = L.map('resultMap').setView([lat, lng], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+    L.marker([lat, lng])
+     .bindPopup(`<b>Land Location</b><br>Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}`)
+     .addTo(map);
+
+    // ── 6. Soil summary (from backend result) ─────────────────────────────────
+    const soil = result.soil_summary || {};
+    setText('soilType',  soil.soil_type        || result.soil_type  || '—');
+    setText('soilPh',    soil.soil_ph          || result.soil_ph    || '—');
+    setText('soilN',     soil.nitrogen_level   || '—');
+    setText('soilP',     soil.phosphorus_level || '—');
+    setText('soilK',     soil.potassium_level  || '—');
+
+    // ── 7. Weather summary (from backend result) ──────────────────────────────
+    const wx = result.weather_summary || {};
+    setText('weatherRainfall', wx.annual_rainfall  ? wx.annual_rainfall + ' mm' : (result.annual_rainfall ? result.annual_rainfall + ' mm' : '—'));
+    setText('weatherTemp',     (wx.temperature_min && wx.temperature_max)
+                                    ? `${wx.temperature_min}°C – ${wx.temperature_max}°C` : '—');
+    setText('weatherHumidity', wx.humidity     ? wx.humidity + '%' : '—');
+    setText('weatherDrought',  wx.drought_risk || result.drought_risk || '—');
+    setText('weatherMonsoon',  wx.monsoon_reliability || '—');
+
+    // ── 8. Trust score + risk badge ───────────────────────────────────────────
+    const score  = result.trust_score ?? '—';
+    const risk   = result.risk_level  || '—';
+    const status = result.status      || '—';
+
+    setText('trustScore',    score);
+    setText('recommendation', status.toUpperCase());
+
+    const badge = document.getElementById('riskBadge');
+    const subEl = document.getElementById('recommendationSub');
+    if (risk === 'Low') {
+        badge.className    = 'inline-block bg-green-400 text-green-900 px-6 py-3 rounded-full font-bold text-xl';
+        badge.textContent  = 'LOW RISK';
+        subEl.textContent  = 'Eligible for loan';
+    } else if (risk === 'Medium') {
+        badge.className    = 'inline-block bg-yellow-400 text-yellow-900 px-6 py-3 rounded-full font-bold text-xl';
+        badge.textContent  = 'MEDIUM RISK';
+        subEl.textContent  = 'Manual review required';
+    } else {
+        badge.className    = 'inline-block bg-red-400 text-red-900 px-6 py-3 rounded-full font-bold text-xl';
+        badge.textContent  = 'HIGH RISK';
+        subEl.textContent  = 'Not eligible at this time';
+    }
+
+    // ── 9. Strengths / key factors ────────────────────────────────────────────
+    const features   = result.features_used || {};
+    const appPayload = appData || result;
+    const strengths  = [];
+    const warnings   = [];
+
+    if ((appPayload.ownership || result.ownership) === 'owner')   strengths.push('Land ownership verified');
+    if ((appPayload.ownership || result.ownership) === 'tenant')  warnings.push('Tenant – no collateral');
+    if ((appPayload.irrigation || result.irrigation) === 'drip')  strengths.push('Modern drip irrigation system');
+    if ((appPayload.irrigation || result.irrigation) === 'rain-fed') warnings.push('Rain-fed irrigation – weather dependent');
+    if (features.crop_diversity >= 3 || (appPayload.cropDiversity >= 3)) strengths.push('Good crop diversity');
+    if (features.average_yield  >= 25) strengths.push('Above-average yield history');
+    if (features.yield_trend    >  2)  strengths.push('Improving yield trend');
+    if (features.rainfall       >= 800) strengths.push('Adequate rainfall in region');
+    if (wx.drought_risk === 'High' || result.drought_risk === 'High') warnings.push('High drought risk area');
+
+    const list = document.getElementById('strengthsList');
+    const items = [
+        ...strengths.map(s => `<li class="flex items-start">
+            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg><span class="text-gray-600">${s}</span></li>`),
+        ...warnings.map(w => `<li class="flex items-start">
+            <svg class="w-5 h-5 text-yellow-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg><span class="text-gray-600">${w}</span></li>`),
+    ];
+    list.innerHTML = items.length ? items.join('') : '<li class="text-gray-400 italic">No specific factors noted.</li>';
+
+    // ── 10. Loan terms ────────────────────────────────────────────────────────
+    const terms   = result.loan_terms || {};
+    const emi     = result.emi_monthly;
+    const termBox = document.getElementById('loanTermsBox');
+
+    if (status === 'Rejected' || !terms.max_loan_amount_inr) {
+        termBox.innerHTML = `<p class="text-red-500 font-medium">Not eligible for loan at this time.</p>
+            <p class="text-gray-500 text-sm mt-1">Improve land size, irrigation, or crop yield to qualify.</p>`;
+    } else {
+        const fmt = n => '₹' + Number(n).toLocaleString('en-IN');
+        const total_payable = emi ? emi * terms.tenure_years * 12 : null;
+        const total_interest = total_payable ? total_payable - terms.max_loan_amount_inr : null;
+        termBox.innerHTML = `
+            <div class="flex justify-between"><span class="text-gray-600">Maximum Loan:</span>   <span class="font-semibold">${fmt(terms.max_loan_amount_inr)}</span></div>
+            <div class="flex justify-between"><span class="text-gray-600">Interest Rate:</span>  <span class="font-semibold">${terms.interest_rate_pct}% p.a.</span></div>
+            <div class="flex justify-between"><span class="text-gray-600">Tenure:</span>         <span class="font-semibold">${terms.tenure_years} years</span></div>
+            <div class="flex justify-between"><span class="text-gray-600">Monthly EMI:</span>    <span class="font-semibold">${emi ? fmt(emi) : '—'}</span></div>
+            <div class="flex justify-between"><span class="text-gray-600">Total Interest:</span> <span class="font-semibold">${total_interest ? fmt(total_interest) : '—'}</span></div>
+            <div class="flex justify-between"><span class="text-gray-600">Total Payable:</span>  <span class="font-semibold">${total_payable ? fmt(total_payable) : '—'}</span></div>
+            <div class="flex justify-between"><span class="text-gray-600">Repayment Score:</span><span class="font-semibold">${((result.repayment_probability || 0) * 100).toFixed(1)}%</span></div>
+            <p class="text-xs text-gray-500 mt-2">* Loan terms calculated using ML model analysis of agricultural data.</p>
+        `;
+    }
+});
+
+// ── Helper ────────────────────────────────────────────────────────────────────
+function setText(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value ?? '—';
+}
+</script>
+</body>
+</html>

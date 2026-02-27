@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - AgriLoan Credit Scorer</title>
+
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+<style>
+/* Wheat blended background */
+.wheat-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.08;
+}
+
+.fade-in {
+    animation: fadeIn 0.6s ease-out;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+
+<body class="bg-gradient-to-br from-green-700 via-green-600 to-blue-700 min-h-screen flex items-center justify-center relative overflow-hidden">
+
+<!-- Wheat Background Layer -->
+<svg class="wheat-bg" viewBox="0 0 1200 800" fill="none">
+
+    <!-- Left Wheat -->
+    <g stroke="white" stroke-width="4">
+        <path d="M200 800 C180 600,220 500,200 300"/>
+        <path d="M200 500 C150 450,130 420,120 380"/>
+        <path d="M200 460 C250 420,270 380,280 340"/>
+        <path d="M200 420 C160 380,150 350,145 320"/>
+        <path d="M200 390 C240 360,260 330,265 300"/>
+    </g>
+
+    <!-- Right Wheat -->
+    <g stroke="white" stroke-width="4">
+        <path d="M1000 800 C980 600,1020 500,1000 300"/>
+        <path d="M1000 500 C950 450,930 420,920 380"/>
+        <path d="M1000 460 C1050 420,1070 380,1080 340"/>
+        <path d="M1000 420 C960 380,950 350,945 320"/>
+        <path d="M1000 390 C1040 360,1060 330,1065 300"/>
+    </g>
+
+</svg>
+
+<!-- Login Card -->
+<div class="bg-white bg-opacity-95 backdrop-blur-lg rounded-2xl shadow-2xl p-10 w-full max-w-md fade-in relative">
+
+    <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 tracking-wide">
+            AgriLoan Secure Access
+        </h2>
+        <p class="text-gray-500 text-sm mt-2">
+            Agricultural Credit Intelligence Platform
+        </p>
+    </div>
+
+    <form id="loginForm" class="space-y-6">
+
+        <!-- Email or Phone -->
+        <div>
+            <label class="block text-gray-700 font-medium mb-2">
+                Email or Phone Number
+            </label>
+            <input type="text"
+                   id="identifier"
+                   placeholder="Enter email or 10-digit phone"
+                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+                   required>
+        </div>
+
+        <!-- Password -->
+        <div>
+            <label class="block text-gray-700 font-medium mb-2">
+                Password
+            </label>
+            <input type="password"
+                   id="password"
+                   placeholder="Enter password"
+                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+                   required>
+        </div>
+
+        <div class="flex justify-between items-center text-sm">
+            <label class="flex items-center space-x-2">
+                <input type="checkbox" class="text-green-600">
+                <span class="text-gray-600">Remember me</span>
+            </label>
+            <a href="#" class="text-green-600 hover:underline">
+                Forgot password?
+            </a>
+        </div>
+
+        <button type="submit"
+                class="w-full bg-gradient-to-r from-green-600 to-blue-600 text-white py-3 rounded-lg font-semibold tracking-wide hover:from-green-700 hover:to-blue-700 transition transform hover:scale-[1.02] shadow-lg">
+            Sign In
+        </button>
+
+    </form>
+
+    <div class="text-center mt-8 text-sm text-gray-500">
+        © 2026 AgriLoan Credit Scorer
+    </div>
+
+</div>
+
+<script>
+document.getElementById("loginForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    const identifier = document.getElementById("identifier").value.trim();
+    const password   = document.getElementById("password").value.trim();
+
+    const emailRegex  = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex  = /^\d{10}$/;
+
+    if (!emailRegex.test(identifier) && !phoneRegex.test(identifier)) {
+        alert("Enter valid email or 10-digit phone number.");
+        return;
+    }
+
+    if (password.length < 4) {
+        alert("Password must be at least 4 characters.");
+        return;
+    }
+
+    localStorage.setItem("authUser", identifier);
+    window.location.href = "dashboard.html";
+});
+</script>
+
+</body>
+</html>
