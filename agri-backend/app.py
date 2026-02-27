@@ -670,6 +670,9 @@ def _register_error_handlers(app: Flask) -> None:
 
 app = create_app()
 
+from flask_cors import CORS
+CORS(app)
+
 if __name__ == "__main__":
     port  = int(os.getenv("AGRILOAN_PORT",  5000))
     debug = os.getenv("AGRILOAN_DEBUG", "0") == "1"
