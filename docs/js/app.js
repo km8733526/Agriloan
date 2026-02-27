@@ -1,7 +1,7 @@
 // ============================================================
 // app.js  —  AgriLoan Credit Scorer
 // Connects the loan application form to the Flask backend API.
-// Backend must be running at http://127.0.0.1:5000
+// Backend must be running on Render (https://your-backend-url.onrender.com)
 // ============================================================
 
 const API_BASE = "https://your-backend-url.onrender.com";
@@ -232,3 +232,4 @@ _style.textContent = `
 }`;
 
 document.head.appendChild(_style);
+
