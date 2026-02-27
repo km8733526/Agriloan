@@ -3,10 +3,7 @@
 // Connects the loan application form to the Flask backend API.
 // ============================================================
 
-const API_BASE =
-  window.location.hostname === "localhost"
-    ? "http://localhost:5000"
-    : "https://agriloan-api.onrender.com";
+const API_BASE = "https://agriloan-api.onrender.com";
 document.addEventListener('DOMContentLoaded', function () {
     initializeFormValidation();
     initializeAadhaarFormatting();
@@ -234,5 +231,6 @@ _style.textContent = `
 }`;
 
 document.head.appendChild(_style);
+
 
 
