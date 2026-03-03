@@ -182,20 +182,16 @@ function handleFormSubmission() {
             hideLoadingModal();
             window.location.href = 'result.html';
 
-        } } catch (err) {
-    hideLoadingModal();
-    console.error('Evaluation error:', err);
-    
-    // Improved error messaging
-    let errorMsg = 'An unexpected error occurred.';
-    if (err.message.includes('fetch')) {
-        errorMsg = 'Cannot connect to the server. This is likely a CORS error or the backend is sleeping.';
-    } else {
-        errorMsg = 'Error: ' + err.message;
-    }
-    
-    showNotification(errorMsg, 'error');
-}
+        } catch (err) {
+            hideLoadingModal();
+            console.error('Evaluation error:', err);
+            showNotification(
+                err.message.includes('fetch')
+                    ? 'Cannot reach backend. Is the server running on port 5000?'
+                    : 'Error: ' + err.message,
+                'error'
+            );
+        }
     });
 }
 
@@ -235,6 +231,7 @@ _style.textContent = `
 }`;
 
 document.head.appendChild(_style);
+
 
 
 
