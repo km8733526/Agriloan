@@ -57,12 +57,7 @@ def create_app() -> Flask:
 
     # ✅ Explicitly allow your GitHub Pages domain
     # Remove supports_credentials=True unless you are using Cookies/Sessions
-    CORS(app, resources={
-        r"/*": {
-            "origins": ["https://km8733526.github.io"],
-            "methods": ["GET", "POST", "OPTIONS"],
-            "allow_headers": ["Content-Type", "Authorization"]
-        }
+    CORS(app)
     })
 
     app.config["SECRET_KEY"] = os.getenv("AGRILOAN_SECRET", os.urandom(24).hex())
