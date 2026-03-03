@@ -170,6 +170,7 @@ function handleFormSubmission() {
             });
 
             const result = await response.json();
+            console.log(result);
 
             if (!response.ok) {
                 throw new Error(result.error || `Server error ${response.status}`);
@@ -231,6 +232,7 @@ _style.textContent = `
 }`;
 
 document.head.appendChild(_style);
+
 
 
 
