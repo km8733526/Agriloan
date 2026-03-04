@@ -11,10 +11,10 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
 <style>
-.fact-good{color:#0f9d58;}
-.fact-bad{color:#f59e0b;}
-.score-large{font-size:4rem;font-weight:700;}
-.pill{display:inline-block;padding:.5rem 1rem;border-radius:999px;font-weight:700;}
+.fact-good{color:#0f9d58}
+.fact-bad{color:#f59e0b}
+.score-large{font-size:4rem;font-weight:700}
+.pill{display:inline-block;padding:.5rem 1rem;border-radius:999px;font-weight:700}
 </style>
 
 </head>
@@ -31,8 +31,6 @@
 <main class="container mx-auto px-4 py-8 max-w-6xl">
 
 <h2 class="text-3xl font-bold mb-6">Credit Evaluation Result</h2>
-
-<!-- Farmer Summary -->
 
 <section class="bg-white rounded shadow p-6 mb-6">
 <div class="grid md:grid-cols-3 gap-4">
@@ -53,22 +51,18 @@
 
 <div class="grid md:grid-cols-2 gap-6 mb-6">
 
-<!-- Land -->
-
 <div class="bg-white rounded shadow p-6">
 <h3 class="text-xl font-semibold text-green-700 mb-4">Land Details</h3>
 
 <div class="space-y-2">
-<div class="flex justify-between"><span>Survey Number</span><span id="resultSurvey">—</span></div>
-<div class="flex justify-between"><span>Land Size</span><span id="resultLandSize">—</span></div>
-<div class="flex justify-between"><span>Irrigation</span><span id="resultIrrigation">—</span></div>
-<div class="flex justify-between"><span>Ownership</span><span id="resultOwnership">—</span></div>
-<div class="flex justify-between"><span>Primary Crop</span><span id="resultCrop">—</span></div>
+<div class="flex justify-between"><span>Survey Number</span><span id="resultSurvey"></span></div>
+<div class="flex justify-between"><span>Land Size</span><span id="resultLandSize"></span></div>
+<div class="flex justify-between"><span>Irrigation</span><span id="resultIrrigation"></span></div>
+<div class="flex justify-between"><span>Ownership</span><span id="resultOwnership"></span></div>
+<div class="flex justify-between"><span>Primary Crop</span><span id="resultCrop"></span></div>
 </div>
 
 </div>
-
-<!-- Map -->
 
 <div class="bg-white rounded shadow p-6">
 <h3 class="text-xl font-semibold text-green-700 mb-4">Land Location</h3>
@@ -79,37 +73,31 @@
 
 <div class="grid md:grid-cols-2 gap-6 mb-6">
 
-<!-- Soil -->
-
 <div class="bg-white rounded shadow p-6">
 <h3 class="text-xl font-semibold text-green-700 mb-4">Soil Analysis</h3>
 
 <div class="space-y-2">
-<div class="flex justify-between"><span>Soil Type</span><span id="soilType">—</span></div>
-<div class="flex justify-between"><span>pH Level</span><span id="soilPh">—</span></div>
-<div class="flex justify-between"><span>Nitrogen</span><span id="soilN">—</span></div>
-<div class="flex justify-between"><span>Phosphorus</span><span id="soilP">—</span></div>
-<div class="flex justify-between"><span>Potassium</span><span id="soilK">—</span></div>
+<div class="flex justify-between"><span>Soil Type</span><span id="soilType"></span></div>
+<div class="flex justify-between"><span>pH Level</span><span id="soilPh"></span></div>
+<div class="flex justify-between"><span>Nitrogen</span><span id="soilN"></span></div>
+<div class="flex justify-between"><span>Phosphorus</span><span id="soilP"></span></div>
+<div class="flex justify-between"><span>Potassium</span><span id="soilK"></span></div>
 </div>
 
 </div>
-
-<!-- Weather -->
 
 <div class="bg-white rounded shadow p-6">
 <h3 class="text-xl font-semibold text-green-700 mb-4">Weather Conditions</h3>
 
 <div class="space-y-2">
-<div class="flex justify-between"><span>Recent Rainfall</span><span id="weatherRainfall">—</span></div>
-<div class="flex justify-between"><span>Temperature</span><span id="weatherTemp">—</span></div>
-<div class="flex justify-between"><span>Humidity</span><span id="weatherHumidity">—</span></div>
+<div class="flex justify-between"><span>Rainfall</span><span id="weatherRainfall"></span></div>
+<div class="flex justify-between"><span>Temperature</span><span id="weatherTemp"></span></div>
+<div class="flex justify-between"><span>Humidity</span><span id="weatherHumidity"></span></div>
 </div>
 
 </div>
 
 </div>
-
-<!-- Score -->
 
 <section class="bg-gradient-to-r from-green-600 to-blue-600 text-white rounded shadow p-8 mb-6">
 
@@ -123,20 +111,18 @@
 
 <div>
 <p class="opacity-90 mb-2">Risk Level</p>
-<div id="riskBadge" class="pill bg-gray-200 text-gray-800">—</div>
+<div id="riskBadge" class="pill bg-gray-200 text-gray-800"></div>
 </div>
 
 <div>
 <p class="opacity-90 mb-2">Recommendation</p>
-<p id="recommendation" class="text-2xl font-bold">—</p>
-<p id="recommendationSub">Processing…</p>
+<p id="recommendation" class="text-2xl font-bold"></p>
+<p id="recommendationSub"></p>
 </div>
 
 </div>
 
 </section>
-
-<!-- Analysis -->
 
 <section class="bg-white rounded shadow p-6 mb-6">
 
@@ -174,7 +160,7 @@ document.addEventListener("DOMContentLoaded",function(){
 const appData=JSON.parse(localStorage.getItem("applicationData")||"null");
 const result=JSON.parse(localStorage.getItem("evaluationResult")||"null");
 
-if(!appData||!result){
+if(!appData){
 alert("No evaluation data found");
 window.location.href="index.html";
 return;
@@ -185,32 +171,37 @@ const el=document.getElementById(id);
 if(el) el.textContent=val??"—";
 }
 
-/* SUMMARY */
+function format(str){
+return str?str.charAt(0).toUpperCase()+str.slice(1):"—";
+}
+
+/* Farmer */
 
 setText("resultName",appData.fullName);
 setText("resultDistrict",appData.district);
 setText("resultSurvey",appData.surveyNumber);
 setText("resultLandSize",appData.landSize+" acres");
-setText("resultIrrigation",appData.irrigation);
-setText("resultOwnership",appData.ownership);
-setText("resultCrop",appData.primaryCrop);
+setText("resultIrrigation",format(appData.irrigation));
+setText("resultOwnership",format(appData.ownership));
+setText("resultCrop",format(appData.primaryCrop));
 
 setText("resultAppId","#AL"+Math.floor(Math.random()*999999));
 
-/* MAP */
+/* Map */
 
-const lat=parseFloat(appData.latitude);
-const lon=parseFloat(appData.longitude);
+const lat=parseFloat(appData.latitude)||17.3850;
+const lon=parseFloat(appData.longitude)||78.4867;
 
 const map=L.map("resultMap").setView([lat,lon],13);
+
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
+
 L.marker([lat,lon]).addTo(map);
 
-/* SOIL */
+/* Soil */
 
-let soilPH=result.soilPH??6.5;
-
-if(soilPH>14) soilPH=soilPH/10;
+let soilPH=result?.soilPH ?? 6.5;
+if(soilPH>14) soilPH/=10;
 
 setText("soilPh",soilPH.toFixed(2));
 
@@ -221,21 +212,30 @@ if(soilPH>7.5) soilType="Alkaline";
 
 setText("soilType",soilType);
 
-setText("soilN",(30+Math.random()*10).toFixed(1)+" mg/kg");
-setText("soilP",(20+Math.random()*5).toFixed(1)+" mg/kg");
-setText("soilK",(200+Math.random()*30).toFixed(1)+" mg/kg");
+setText("soilN",(250+Math.random()*80).toFixed(0)+" kg/ha");
+setText("soilP",(15+Math.random()*20).toFixed(0)+" kg/ha");
+setText("soilK",(150+Math.random()*150).toFixed(0)+" kg/ha");
 
-/* WEATHER */
+/* Weather */
 
-const weather=result.weather||{};
+const weather=result?.weather||{};
 
 setText("weatherRainfall",(weather.rainfall??0)+" mm");
 setText("weatherTemp",(weather.temp??30)+" °C");
 setText("weatherHumidity",(weather.humidity??60)+"%");
 
-/* EXPECTED YIELDS */
+/* Yield */
 
-const cropYieldExpected={
+const yields=[appData.yield1,appData.yield2,appData.yield3]
+.map(v=>parseFloat(v))
+.filter(v=>!isNaN(v)&&v>0);
+
+let avgYield=0;
+if(yields.length) avgYield=yields.reduce((a,b)=>a+b)/yields.length;
+
+/* Expected yield */
+
+const cropYield={
 rice:40,
 wheat:30,
 cotton:20,
@@ -244,51 +244,33 @@ soybean:15,
 maize:35
 };
 
-/* AVG YIELD */
+const expected=cropYield[appData.primaryCrop]||30;
 
-const yields=[appData.yield1,appData.yield2,appData.yield3].filter(v=>v>0);
-
-let avgYield=0;
-
-if(yields.length)
-avgYield=yields.reduce((a,b)=>a+b,0)/yields.length;
-
-/* FACTORS */
+/* Factor engine */
 
 const positives=[];
 const negatives=[];
 
-/* OWNERSHIP */
+/* Ownership */
 
-if(appData.ownership==="owner")
-positives.push("Land ownership verified");
+if(appData.ownership==="owner") positives.push("Land ownership verified");
+if(appData.ownership==="lease") negatives.push("Leased land weakens collateral security");
+if(appData.ownership==="tenant") negatives.push("Tenant farming provides weak collateral");
 
-if(appData.ownership==="lease")
-negatives.push("Leased land reduces collateral strength");
+/* Irrigation */
 
-if(appData.ownership==="tenant")
-negatives.push("Tenant farming provides weak collateral");
-
-/* IRRIGATION */
-
-if(appData.irrigation==="drip")
-positives.push("Efficient drip irrigation system");
-
+if(appData.irrigation==="drip") positives.push("Efficient drip irrigation system");
 else if(appData.irrigation==="borewell"||appData.irrigation==="canal")
 positives.push("Reliable irrigation available");
+else negatives.push("Rain-fed farming increases weather risk");
 
-else if(appData.irrigation==="rain-fed")
-negatives.push("Rain-fed farming depends on rainfall");
-
-/* YIELD */
-
-const expected=cropYieldExpected[appData.primaryCrop]||30;
+/* Yield */
 
 if(avgYield===0)
-negatives.push("No crop yield history provided");
+negatives.push("No crop yield history available");
 
 else if(avgYield>expected*1.2)
-positives.push("Crop yield above regional average");
+positives.push("Crop yield significantly above regional average");
 
 else if(avgYield>expected*0.8)
 positives.push("Crop yield near regional average");
@@ -296,15 +278,18 @@ positives.push("Crop yield near regional average");
 else
 negatives.push("Crop yield below regional average");
 
-/* DIVERSITY */
+/* Diversity */
 
 if(appData.cropDiversity>=3)
-positives.push("Good crop diversification");
+positives.push("Good crop diversification reduces financial risk");
 
-if(appData.cropDiversity===1)
-negatives.push("Single crop dependency increases risk");
+else if(appData.cropDiversity==2)
+positives.push("Moderate crop diversification");
 
-/* SOIL */
+else
+negatives.push("Single crop dependency increases financial risk");
+
+/* Soil */
 
 const cropPH={
 rice:[5.5,6.5],
@@ -318,30 +303,36 @@ maize:[5.5,7]
 const range=cropPH[appData.primaryCrop]||[6,7.5];
 
 if(soilPH>=range[0]&&soilPH<=range[1])
-positives.push("Soil pH suitable for "+appData.primaryCrop);
-
+positives.push("Soil pH suitable for "+appData.primaryCrop+" cultivation");
 else
 negatives.push("Soil pH not ideal for "+appData.primaryCrop);
 
-/* RAINFALL */
+/* Rainfall */
 
 if(appData.irrigation==="rain-fed"){
-
 if((weather.rainfall??0)<1)
-negatives.push("Very low recent rainfall for rain-fed farming");
-
+negatives.push("Very low rainfall increases crop failure risk");
 else
 positives.push("Recent rainfall supports rain-fed cultivation");
-
 }
 
-/* SCORE */
+/* Score engine */
 
-const score=result.score??0;
+let score=50;
 
-setText("trustScore",score);
+score+=Math.min(appData.landSize*3,20);
 
-/* RISK */
+if(appData.ownership==="owner") score+=10;
+if(appData.irrigation==="drip") score+=10;
+if(avgYield>expected) score+=10;
+if(appData.cropDiversity>=3) score+=8;
+if(soilPH>=range[0]&&soilPH<=range[1]) score+=5;
+
+score=Math.max(0,Math.min(100,score));
+
+setText("trustScore",score.toFixed(1));
+
+/* Risk */
 
 const badge=document.getElementById("riskBadge");
 const sub=document.getElementById("recommendationSub");
@@ -357,14 +348,12 @@ badge.textContent="LOW RISK";
 setText("recommendation","APPROVED");
 sub.textContent="Eligible for loan";
 }
-
 else if(risk==="Medium"){
 badge.className="pill bg-yellow-400 text-yellow-900";
 badge.textContent="MEDIUM RISK";
 setText("recommendation","REVIEW");
 sub.textContent="Bank officer verification required";
 }
-
 else{
 badge.className="pill bg-red-400 text-red-900";
 badge.textContent="HIGH RISK";
@@ -372,29 +361,20 @@ setText("recommendation","REJECTED");
 sub.textContent="Loan risk too high";
 }
 
-/* DISPLAY FACTORS */
+/* Factor display */
 
 let factors=[];
+if(score>=75) factors=positives.slice(0,3);
+else if(score>=55) factors=[...negatives,...positives].slice(0,3);
+else factors=negatives.slice(0,3);
 
-if(score>=75)
-factors=positives.slice(0,3);
-
-else if(score>=55)
-factors=[...negatives,...positives].slice(0,3);
-
-else
-factors=negatives.slice(0,3);
-
-const list=document.getElementById("strengthsList");
-
-list.innerHTML=factors.map(f=>{
+document.getElementById("strengthsList").innerHTML=factors.map(f=>{
 if(negatives.includes(f))
 return `<li class="fact-bad">⚠ ${f}</li>`;
-else
 return `<li class="fact-good">✔ ${f}</li>`;
 }).join("");
 
-/* LOAN */
+/* Loan */
 
 const termBox=document.getElementById("loanTermsBox");
 
@@ -430,7 +410,7 @@ appData.landSize*
 cropValue*
 irrigationFactor*
 ownershipFactor*
-(0.5+score/200)
+(score/100)
 );
 
 const interest=11;
@@ -442,10 +422,15 @@ const rate=interest/100/12;
 const emi=Math.round((loan*rate)/(1-Math.pow(1+rate,-months)));
 
 termBox.innerHTML=`
+
 <div class="flex justify-between"><span>Maximum Loan</span><span>₹${loan.toLocaleString()}</span></div>
+
 <div class="flex justify-between"><span>Interest</span><span>${interest}%</span></div>
+
 <div class="flex justify-between"><span>Tenure</span><span>${tenure} years</span></div>
+
 <div class="flex justify-between"><span>Monthly EMI</span><span>₹${emi.toLocaleString()}</span></div>
+
 `;
 
 });
